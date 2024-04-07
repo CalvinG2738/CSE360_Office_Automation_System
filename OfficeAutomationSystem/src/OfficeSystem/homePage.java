@@ -66,7 +66,7 @@ public class homePage extends Application{
 		root.getChildren().addAll(border);
 		border.setTop(title);
 		border.setCenter(userSelect);
-		userSelect.getChildren().addAll(iAm, doctor, nurse, patient);
+		userSelect.getChildren().addAll(doctor, nurse, patient);
 		
 		//**********SET SCENE**********
 		patientLogin patientLoginScene = new patientLogin();

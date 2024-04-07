@@ -105,6 +105,7 @@ public class patientLogin{
 		bottomButton.getChildren().addAll(mainMenu);
 		
 		//**********FUNCTIONALITY**********
+		patientPortal patientPortalFunction = new patientPortal();
 		signIn.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
             	if(firstNameInput.getText().length() <= maxLength && lastNameInput.getText().length() <= maxLength) {
@@ -125,8 +126,15 @@ public class patientLogin{
             					}
             				}
             			}
+            			// When the user puts in their login correctly
             			if(flag == true) {
             				System.out.println("signIn clicked\nFirst Name: "+firstNameInput.getText()+"\nLast Name: "+lastNameInput.getText()+"\nBirthday: "+birthdayInput.getText()+"\n");
+            			
+            				Scene portal = patientPortalFunction.patientPortalFunction(homePageStage);
+            				homePageStage.setScene(portal);
+            			
+            			
+            			
             			}
             		} else {
             			System.out.println("ERROR: Birthday must be in the following format(mm/dd/yyyy)");
@@ -142,8 +150,15 @@ public class patientLogin{
 		
 		
 		//**********SET SCENE**********
+		
+		
+		patientCreateAnAccount patientCreateAnAccountFunction = new patientCreateAnAccount();
+		createAccount.setOnAction(e -> homePageStage.setScene(patientCreateAnAccountFunction.patientCreateAnAccountFunction(homePageStage)));
+		
 		homePage homePageScene = new homePage();
 		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
+		
+		
 		
 		return newScene;
 	}
