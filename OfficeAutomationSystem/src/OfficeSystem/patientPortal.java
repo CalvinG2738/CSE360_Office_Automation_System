@@ -73,19 +73,29 @@ public class patientPortal {
 		BorderPane.setAlignment(title, Pos.CENTER);
 		title.setFont(Font.font ("", FontWeight.BOLD, 25));
 		title.setPadding(new Insets(0,0,25,0));
+		//MAINMENU N MESSAGING
+		
 		
 		//**********LAzy ahh laYOUT**********
 		HBox patHist = new HBox(10);
 		patHist.getChildren().addAll(patientHistory, date, show);
 		VBox labelsAndAreas = new VBox(10);
 		labelsAndAreas.getChildren().addAll(healthIssuesLabel, healthIssuesArea, prevMedsLabel, prevMedsArea, histImmunizationsLabel, histImmunizationsArea);
+		
 		VBox contactInfoLayout = new VBox(10);
 		contactInfoLayout.getChildren().addAll(contInfo, email, phoneNum, updateContInfo);
-		VBox MainLayout = new VBox(2);
-		MainLayout.getChildren().addAll(title, patHist, labelsAndAreas, contactInfoLayout, messaging, mainMenu);
 		
-
-		border.setCenter(MainLayout);
+		VBox leftLayout = new VBox(2);
+		leftLayout.getChildren().addAll(patHist, labelsAndAreas, contactInfoLayout);
+		
+		HBox buttons = new HBox(600);
+		buttons.getChildren().addAll(mainMenu, messaging);
+		BorderPane.setAlignment(buttons, Pos.BOTTOM_CENTER);
+		
+		border.setTop(title);
+		border.setLeft(leftLayout);
+		border.setRight(contactInfoLayout);
+		border.setBottom(buttons);
 		root.getChildren().add(border);
 		
 		//**********SET SCENE**********

@@ -60,25 +60,37 @@ public class patientCreateAnAccount {
 		
 		//**********STYLE**********
 		//TITLE
-		BorderPane.setAlignment(title, Pos.CENTER);
+		BorderPane.setAlignment(title, Pos.TOP_CENTER);
 		title.setFont(Font.font ("", FontWeight.BOLD, 25));
 		title.setPadding(new Insets(0,0,25,0));
+		title.setAlignment(Pos.TOP_CENTER);
+		//MAINMENU
+		BorderPane.setAlignment(mainMenu, Pos.BOTTOM_LEFT);
+		mainMenu.setStyle("-fx-font-weight: BOLD");
 		
 		//**********LAYOUT**********
-		HBox TextLabels = new HBox(30);
-		TextLabels.getChildren().addAll(firstNameLabel, lastNameLabel, birthdayLabel);
-		HBox Inputs = new HBox(30);
-		Inputs.getChildren().addAll(firstNameInput, lastNameInput, birthdayInput);
-		VBox labelsAndInputs = new VBox(30);
-		labelsAndInputs.getChildren().addAll(TextLabels, Inputs);
+		VBox firstLO = new VBox(5);
+		firstLO.getChildren().addAll(firstNameLabel, firstNameInput);
+		VBox lastLO = new VBox(5);
+		lastLO.getChildren().addAll(lastNameLabel, lastNameInput);
+		VBox birthLO = new VBox(5);
+		birthLO.getChildren().addAll(birthdayLabel, birthdayInput);
+		
+		HBox labelsAndInputs = new HBox(10);
+		labelsAndInputs.getChildren().addAll(firstLO, lastLO, birthLO);
+		labelsAndInputs.setAlignment(Pos.CENTER);
+		labelsAndInputs.setStyle("-fx-font-weight: BOLD; -fx-font-size: 15");
+		
 		VBox MainLayout = new VBox(20);
-		MainLayout.getChildren().addAll(title, labelsAndInputs, createAccount, mainMenu);
+		MainLayout.getChildren().addAll(labelsAndInputs, createAccount);
+		MainLayout.setAlignment(Pos.CENTER);
+		MainLayout.setStyle("-fx-font-weight: BOLD; -fx-font-size: 15");
 		
-		
+		border.setTop(title);
 		border.setCenter(MainLayout);
+		border.setBottom(mainMenu);
+		
 		root.getChildren().add(border);
-		
-		
 		
 		
 		//**********FUNCTIONALITY**********
@@ -146,16 +158,16 @@ public class patientCreateAnAccount {
 	// purely based on their first and last names rn for database
 		public String createPatientID(String fname, String lname) {
 			Random rand = new Random();
-			int randID = rand.nextInt(1000); // "there's a thousand yous, there's only one of me" 🗣️🗣️🗣️🗣️🗣️
+			//int randID = rand.nextInt(1000); // "there's a thousand yous, there's only one of me" 🗣️🗣️🗣️🗣️🗣️
 			
-			String patientID = fname + lname + randID;
+			String patientID = fname + lname;  //randID; commented out to make it easier for now, prob should get rid of it
 			return patientID;
 		}
 	
 	// Save Info to file
 		private void savePatientInfoToFile(String patientID, String patientInfo) {
 			String fileName = patientID + "_PatientInfo.txt";
-			String filePath = "src/OfficeSystem/" + fileName; // i placed it in the src file for hw, idk bout yall 
+			String filePath = "src/OfficeSystem/" + fileName; 
 			File file = new File(filePath);
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file));

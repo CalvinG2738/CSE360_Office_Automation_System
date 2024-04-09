@@ -1,4 +1,4 @@
-//Phase2 Submission
+//Phase3 Submission
 //Tu42: Abe Troop, Shawn Neill, Calvin Gregory, Jordan Clifford, Helen Zhang
 
 package OfficeSystem;
@@ -66,7 +66,7 @@ public class homePage extends Application{
 		root.getChildren().addAll(border);
 		border.setTop(title);
 		border.setCenter(userSelect);
-		userSelect.getChildren().addAll(doctor, nurse, patient);
+		userSelect.getChildren().addAll(iAm, doctor, nurse, patient);
 		
 		//**********SET SCENE**********
 		patientLogin patientLoginScene = new patientLogin();
