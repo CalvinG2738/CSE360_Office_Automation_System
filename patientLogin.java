@@ -1,12 +1,4 @@
-//Phase3 Submission
-//Tu42: Abe Troop, Shawn Neill, Calvin Gregory, Jordan Clifford, Helen Zhang
-
 package OfficeSystem;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 //IMPORTS
 import javafx.event.ActionEvent;
@@ -35,9 +27,9 @@ public class patientLogin{
 	public static final int WIDTH = 770, HEIGHT = 420;
 	public final int maxLength = 32;
 	public final int birthdayLength = 10;
-	public static final String FILEPATH = "src/OfficeSystem/";
 	
 	public Scene patientLoginFunction(Stage homePageStage) {
+		System.out.println("patientLogin");
 		//**********STRUCTURE**********
 		StackPane root = new StackPane();
 		Scene newScene = new Scene(root, WIDTH, HEIGHT);
@@ -111,7 +103,6 @@ public class patientLogin{
 		bottomButton.getChildren().addAll(mainMenu);
 		
 		//**********FUNCTIONALITY**********
-		patientPortal patientPortalFunction = new patientPortal();
 		signIn.setOnAction(new EventHandler<>() {
             public void handle(ActionEvent event) {
             	if(firstNameInput.getText().length() <= maxLength && lastNameInput.getText().length() <= maxLength) {
@@ -132,21 +123,11 @@ public class patientLogin{
             					}
             				}
             			}
-            			// When the user puts in their login correctly
             			if(flag == true) {
             				System.out.println("signIn clicked\nFirst Name: "+firstNameInput.getText()+"\nLast Name: "+lastNameInput.getText()+"\nBirthday: "+birthdayInput.getText()+"\n");
-            			
-            				String patientID = firstNameInput.getText() + lastNameInput.getText();
-            				String bday = birthdayInput.getText();
-            				if ((doTheyExist(patientID) == true) && (checkBday(patientID, bday))) {
-            				Scene portal = patientPortalFunction.patientPortalFunction(homePageStage);
-            				homePageStage.setScene(portal);
-            				}
-            				else {
-            				System.err.println("Invalid Input!");
-            				}
-            			
-            			
+            				String patientName = firstNameInput.getText()+lastNameInput.getText();
+            				patientPortal patientPortalScene = new patientPortal();
+            				homePageStage.setScene(patientPortalScene.patientPortalFunction(homePageStage, patientName));
             			}
             		} else {
             			System.out.println("ERROR: Birthday must be in the following format(mm/dd/yyyy)");
@@ -162,53 +143,12 @@ public class patientLogin{
 		
 		
 		//**********SET SCENE**********
-		
-		
-		patientCreateAnAccount patientCreateAnAccountFunction = new patientCreateAnAccount();
-		createAccount.setOnAction(e -> homePageStage.setScene(patientCreateAnAccountFunction.patientCreateAnAccountFunction(homePageStage)));
-		
 		homePage homePageScene = new homePage();
 		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
 		
-		
+		patientCreateAnAccount patientCreateAnAccountScene = new patientCreateAnAccount();
+		createAccount.setOnAction(e -> homePageStage.setScene(patientCreateAnAccountScene.patientCreateAnAccountFunction(homePageStage)));
 		
 		return newScene;
 	}
-	
-	public static boolean doTheyExist(String patientID) {
-		String fileName = patientID + "_PatientInfo.txt";
-		String filePath = FILEPATH + fileName;
-		File file = new File(filePath);
-		return file.exists();
-	}
-	public boolean checkBday(String patientID, String bdayInput) {
-		String fileName = patientID + "_PatientInfo.txt";
-		String filePath = FILEPATH + fileName;
-		String bdayFile = "";
-		try {
-			// Load patient info
-			try (BufferedReader patientInfoReader = new BufferedReader(new FileReader(filePath))) {
-				String line;
-				while ((line = patientInfoReader.readLine()) != null) {
-					// check birthday
-					if (line.startsWith("Birthday:")) {
-						bdayFile = line.substring(line.indexOf(":") + 1).trim();
-						break;
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			// Handles any IO exceptions
-		}
-		
-		
-		if (bdayFile != null && bdayFile.equals(bdayInput)) {
-			return true; // bday match
-		} else {
-			return false; // no bday match
-		}
-	}
-	
-	
 }

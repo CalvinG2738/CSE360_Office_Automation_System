@@ -1,6 +1,3 @@
-//Phase3 Submission
-//Tu42: Abe Troop, Shawn Neill, Calvin Gregory, Jordan Clifford, Helen Zhang
-
 package OfficeSystem;
 
 //IMPORTS
@@ -27,6 +24,7 @@ public class homePage extends Application{
 	}
 	
 	public void start(Stage homePageStage) {
+		System.out.println("homePage");
 		//**********SET SCENE**********
 		Scene newScene = homePageFunction(homePageStage);
 		
@@ -66,11 +64,17 @@ public class homePage extends Application{
 		root.getChildren().addAll(border);
 		border.setTop(title);
 		border.setCenter(userSelect);
-		userSelect.getChildren().addAll(doctor, nurse, patient);
+		userSelect.getChildren().addAll(iAm, doctor, nurse, patient);
 		
 		//**********SET SCENE**********
 		patientLogin patientLoginScene = new patientLogin();
 		patient.setOnAction(e -> homePageStage.setScene(patientLoginScene.patientLoginFunction(homePageStage)));
+		
+		nursePatientVitals nursePatientVitalsScene = new nursePatientVitals();
+		nurse.setOnAction(e -> homePageStage.setScene(nursePatientVitalsScene.nursePatientVitalsFunction(homePageStage)));
+		
+		doctorPage doctorPageScene = new doctorPage();
+		doctor.setOnAction(e -> homePageStage.setScene(doctorPageScene.doctorPageFunction(homePageStage)));
 		
 		return newScene;
     }

@@ -1,6 +1,3 @@
-//Phase2 Submission
-//Tu42: Abe Troop, Shawn Neill, Calvin Gregory, Jordan Clifford, Helen Zhang
-
 package OfficeSystem;
 
 
@@ -27,11 +24,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 public class patientCreateAnAccount {
-
-	/*public Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-	public int width = (int)size.getWidth();
-	public int height = (int)size.getHeight();
-	USE IF WE WANT TO UTILIZE THE WHOLE SCREEN SIZE*/
 	
 	//PUBLIC VARIABLES
 	public static final int WIDTH = 770, HEIGHT = 420;
@@ -39,7 +31,7 @@ public class patientCreateAnAccount {
 	public final int birthdayLength = 10;
 	
 	public Scene patientCreateAnAccountFunction(Stage homePageStage) {
-		
+		System.out.println("patientCreateAnAccount");
 		//**********STRUCTURE**********
 		StackPane root = new StackPane();
 		Scene newScene = new Scene(root, WIDTH, HEIGHT);
@@ -158,8 +150,7 @@ public class patientCreateAnAccount {
 	// purely based on their first and last names rn for database
 		public String createPatientID(String fname, String lname) {
 			Random rand = new Random();
-			//int randID = rand.nextInt(1000); // "there's a thousand yous, there's only one of me" 🗣️🗣️🗣️🗣️🗣️
-			
+			//int randID = rand.nextInt(1000); // "there's a thousand yous, there's only one of me" 🗣️🗣️🗣️🗣️🗣
 			String patientID = fname + lname;  //randID; commented out to make it easier for now, prob should get rid of it
 			return patientID;
 		}

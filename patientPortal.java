@@ -1,6 +1,3 @@
-//Phase2 Submission
-//Tu42: Abe Troop, Shawn Neill, Calvin Gregory, Jordan Clifford, Helen Zhang
-
 package OfficeSystem;
 
 
@@ -38,7 +35,8 @@ public class patientPortal {
 	//PUBLIC VARIABLES
 	public static final int WIDTH = 770, HEIGHT = 420;
 	
-	public Scene patientPortalFunction(Stage homePageStage) {
+	public Scene patientPortalFunction(Stage homePageStage, String patientName) {
+		System.out.println("patientPortal");
 		//**********STRUCTURE**********
 		StackPane root = new StackPane();
 		Scene newScene = new Scene(root, WIDTH, HEIGHT);
@@ -101,6 +99,13 @@ public class patientPortal {
 		//**********SET SCENE**********
 		homePage homePageScene = new homePage();
 		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
+		
+		patientUpdateContactInfo patientUpdateContactInfoScene = new patientUpdateContactInfo();
+		updateContInfo.setOnAction(e -> homePageStage.setScene(patientUpdateContactInfoScene.patientUpdateContactInfoFunction(homePageStage, patientName)));
+		
+		patientMessagingPortal patientMessagingPortalScene = new patientMessagingPortal();
+		messaging.setOnAction(e -> homePageStage.setScene(patientMessagingPortalScene.patientMessagingPortalFunction(homePageStage, patientName)));
+		
 		
 		return newScene;
 	}
