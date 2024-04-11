@@ -59,7 +59,6 @@
 //		TextField updatePharmacyCurrent = new TextField();
 //		Button updateButton = new Button("Update");
 //		Button mainMenu = new Button("Main Menu");
-//		Button back = new Button("Back");
 //		
 //		//**********STYLE**********
 //		//TITLE
@@ -110,7 +109,7 @@
 //		userType.setBottom(updateBorder);
 //		updateBorder.getChildren().addAll(updateButton);
 //		border.setBottom(bottomButton);
-//		bottomButton.getChildren().addAll(mainMenu, back);
+//		bottomButton.getChildren().addAll(mainMenu);
 //	
 //		//**********FUNCTIONALITY**********
 //		
@@ -153,7 +152,6 @@
 //		//**********SET SCENE**********
 //		homePage homePageScene = new homePage();
 //		nursePatientVitals nursePageScene = new nursePatientVitals();
-//		back.setOnAction(e -> homePageStage.setScene(nursePageScene.nursePatientVitalsFunction(homePageStage)));
 //		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
 //       
 //		return newScene;
@@ -250,7 +248,6 @@ public class InsurancePharmacy {
 		TextField pharmacyInputCurrent = new TextField();
 		Button updateButton = new Button("Update");
 		Button mainMenu = new Button("Main Menu");
-		Button patientPortalButton = new Button("Return to Patient Portal");
 		
 		//**********STYLE**********
 		//TITLE
@@ -301,7 +298,7 @@ public class InsurancePharmacy {
 		userType.setBottom(updateBorder);
 		updateBorder.getChildren().addAll(updateButton);
 		border.setBottom(bottomButton);
-		bottomButton.getChildren().addAll(mainMenu, patientPortalButton);
+		bottomButton.getChildren().addAll(mainMenu);
 	
 		//**********FUNCTIONALITY**********
 		
@@ -345,9 +342,6 @@ public class InsurancePharmacy {
 		//**********SET SCENE**********
 		homePage homePageScene = new homePage();
 		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
-		
-		patientPortal patientPortalScene = new patientPortal();
-		patientPortalButton.setOnAction(e -> homePageStage.setScene(patientPortalScene.patientPortalFunction(homePageStage, patientName)));
 		
 		return newScene;
 	}
