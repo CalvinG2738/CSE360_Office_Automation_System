@@ -82,9 +82,8 @@ public class DocNurseMessage {
         
         HBox hAreaBottom = new HBox();
         mainMenu = new Button("Main Menu");
-        back = new Button("Back");
         hAreaBottom.setSpacing(500);
-        hAreaBottom.getChildren().addAll(mainMenu, back);
+        hAreaBottom.getChildren().addAll(mainMenu);
          
         title = new Label("Office Automation System for Pediatric's Doctor's Office");
         title.setFont(Font.font("", FontWeight.BOLD, 25));
@@ -130,9 +129,7 @@ public class DocNurseMessage {
         
         inboxArea.setEditable(false);
         
-        nursePatientVitals nurseScene = new nursePatientVitals();
-		back.setOnAction(e -> homePageStage.setScene(nurseScene.nursePatientVitalsFunction(homePageStage)));
-		
+        nursePatientVitals nurseScene = new nursePatientVitals();		
 		homePage homePageScene = new homePage();
 		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
          
