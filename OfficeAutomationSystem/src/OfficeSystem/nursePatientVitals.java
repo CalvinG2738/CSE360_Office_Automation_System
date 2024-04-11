@@ -237,7 +237,7 @@ public class nursePatientVitals {
 	
 	public void writeToFile() {
 		//TODO Change filepath to OfficeSystem
-		String filePath = "src/OfficeSystem/" + patientID + "_PatientInsuranceAndPharmacy.txt";
+		String filePath = "src/OfficeSystem/" + patientID + "_PatientVitals.txt";
 		
 		try {
 			FileWriter fileWriter = new FileWriter(filePath);
