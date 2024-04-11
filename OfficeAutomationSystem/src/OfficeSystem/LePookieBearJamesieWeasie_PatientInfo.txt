@@ -1,6 +1,0 @@
-Patient ID: LePookieBearJamesieWeasie
-First Name: LePookieBear
-Last Name: JamesieWeasie
-Birthday: 12/30/1984
-Phone Number: N/A
-Email: N/A
