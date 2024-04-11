@@ -1,9 +1,12 @@
 package OfficeSystem;
 
 
+import java.io.BufferedReader;
 //IMPORTS
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
@@ -34,9 +37,16 @@ public class patientPortal {
 	
 	//PUBLIC VARIABLES
 	public static final int WIDTH = 770, HEIGHT = 420;
+	private String patientID;
+	private String currentHealthIssue;
+	private String currentPerscriptions;
+	private String currentImmunizations;
+	private String currentPhoneNum;
+	private String currentEmail;
 	
-	public Scene patientPortalFunction(Stage homePageStage, String patientName) {
+	public Scene patientPortalFunction(Stage homePageStage, String patientID) {
 		System.out.println("patientPortal");
+		this.patientID = patientID;
 		//**********STRUCTURE**********
 		StackPane root = new StackPane();
 		Scene newScene = new Scene(root, WIDTH, HEIGHT);
@@ -45,22 +55,29 @@ public class patientPortal {
 		//**********VARIABLES**********
 		Label title = new Label("Office Automation System for Pediatric Doctor's Office");
 		
-		Label patientHistory = new Label("Patient History: ");
-		Label healthIssuesLabel = new Label("Health Issues: ");
-		Label prevMedsLabel = new Label("Previously Prescribed Medications: ");
-		Label histImmunizationsLabel = new Label("History of Immunizations: ");
-		Label contInfo = new Label("Contact Information: ");
-		Label email = new Label("Email: ");
-		Label phoneNum = new Label("Phone Number: ");
+		Label patientHistory = new Label("Patient History:");
+		Label healthIssuesLabel = new Label("Health Issues:");
+		Label prevMedsLabel = new Label("Previously Prescribed Medications:");
+		Label histImmunizationsLabel = new Label("History of Immunizations:");
+		Label contInfo = new Label("Contact Information:");
+		Label email = new Label("Email:");
+		Label phoneNum = new Label("Phone Number:");
+		TextField emailField = new TextField("");
+		emailField.setEditable(false);
+		TextField phoneNumField = new TextField("");
+		phoneNumField.setEditable(false);
 		//**AREAS ALL RELIENT ON DOC/NURSE INPUTS***
 		TextArea healthIssuesArea = new TextArea("");
-		TextArea prevMedsArea = new TextArea("");
-		TextArea histImmunizationsArea = new TextArea("");
+		healthIssuesArea.setMaxWidth(WIDTH/2 - 100);
 		healthIssuesArea.setEditable(false);
+		TextArea prevMedsArea = new TextArea("");
+		prevMedsArea.setMaxWidth(WIDTH/2 - 100);
 		prevMedsArea.setEditable(false);
+		TextArea histImmunizationsArea = new TextArea("");
+		histImmunizationsArea.setMaxWidth(WIDTH/2 - 100);
 		histImmunizationsArea.setEditable(false);
 		
-		MenuButton date = new MenuButton("Date");
+		//MenuButton date = new MenuButton("Date");
 		Button show = new Button("Show");
 		Button updateContInfo = new Button("Update Contact Information");
 		Button messaging = new Button("Messaging");
@@ -74,20 +91,24 @@ public class patientPortal {
 		//MAINMENU N MESSAGING
 		
 		
-		//**********LAzy ahh laYOUT**********
+		//**********LAYOUT**********
 		HBox patHist = new HBox(10);
-		patHist.getChildren().addAll(patientHistory, date, show);
+		patHist.getChildren().addAll(patientHistory, show);
 		VBox labelsAndAreas = new VBox(10);
+		//labelsAndAreas.setStyle("-fx-font-weight: BOLD; -fx-font-size: 15");
 		labelsAndAreas.getChildren().addAll(healthIssuesLabel, healthIssuesArea, prevMedsLabel, prevMedsArea, histImmunizationsLabel, histImmunizationsArea);
 		
 		VBox contactInfoLayout = new VBox(10);
-		contactInfoLayout.getChildren().addAll(contInfo, email, phoneNum, updateContInfo);
+		contactInfoLayout.setStyle("-fx-font-weight: BOLD; -fx-font-size: 15");
+		contactInfoLayout.getChildren().addAll(contInfo, email, emailField, phoneNum, phoneNumField, updateContInfo);
 		
 		VBox leftLayout = new VBox(2);
-		leftLayout.getChildren().addAll(patHist, labelsAndAreas, contactInfoLayout);
+		leftLayout.setStyle("-fx-font-weight: BOLD; -fx-font-size: 12");
+		leftLayout.getChildren().addAll(patHist, labelsAndAreas);
 		
-		HBox buttons = new HBox(600);
+		HBox buttons = new HBox(630);
 		buttons.getChildren().addAll(mainMenu, messaging);
+		buttons.setStyle("-fx-font-weight: BOLD; -fx-font-size: 9");
 		BorderPane.setAlignment(buttons, Pos.BOTTOM_CENTER);
 		
 		border.setTop(title);
@@ -95,19 +116,91 @@ public class patientPortal {
 		border.setRight(contactInfoLayout);
 		border.setBottom(buttons);
 		root.getChildren().add(border);
+		//**********SHOW BUTTON***********
+		show.setOnAction(new EventHandler<>() {
+			public void handle(ActionEvent event) {
+				
+				readFromFile(healthIssuesLabel, healthIssuesArea);
+				readFromFile(prevMedsLabel, prevMedsArea);
+				readFromFile(histImmunizationsLabel, histImmunizationsArea);
+				show.setDisable(true);
+			}
+		});
+		//************SET CONTACT INFORMATION**************
+		loadPatientContInfo(patientID, emailField, phoneNumField);
 		
 		//**********SET SCENE**********
 		homePage homePageScene = new homePage();
 		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
 		
 		patientUpdateContactInfo patientUpdateContactInfoScene = new patientUpdateContactInfo();
-		updateContInfo.setOnAction(e -> homePageStage.setScene(patientUpdateContactInfoScene.patientUpdateContactInfoFunction(homePageStage, patientName)));
+		updateContInfo.setOnAction(e -> homePageStage.setScene(patientUpdateContactInfoScene.patientUpdateContactInfoFunction(homePageStage, patientID)));
 		
 		patientMessagingPortal patientMessagingPortalScene = new patientMessagingPortal();
-		messaging.setOnAction(e -> homePageStage.setScene(patientMessagingPortalScene.patientMessagingPortalFunction(homePageStage, patientName)));
+		messaging.setOnAction(e -> homePageStage.setScene(patientMessagingPortalScene.patientMessagingPortalFunction(homePageStage, patientID)));
 		
 		
 		return newScene;
 	}
+	
+	public void readFromFile(Label label, TextArea textArea){
+		String filePath = "src/OfficeSystem/" + patientID;
+		if(label.getText().equals("Health Issues:")) {
+			filePath = filePath + "_PatientHealthIssues.txt";
+		}
+		if(label.getText().equals("Previously Prescribed Medications:")) {
+			filePath = filePath + "_PatientMedications.txt";
+		}
+		if(label.getText().equals("History of Immunizations:")) {
+			filePath = filePath + "_PatientImmunizations.txt";
+		}
+		
+		try {
+			FileReader fileReader = new FileReader(filePath);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			
+			textArea.clear();
+			String line;
+			while((line = bufferedReader.readLine()) != null) {
+				textArea.appendText(line + "\n");
+			}
+			
+			bufferedReader.close();
+		} catch(FileNotFoundException e) {
+			textArea.setText("File not found");
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	// Loads patient info from each file into text fields
+		public void loadPatientContInfo(String confirmedID, TextField emailField, TextField phoneNumField) {
+			String patientInfoFile = "src/OfficeSystem/" + confirmedID + "_PatientInfo.txt";
+	
+			try {
+			// Load patient info
+			try (BufferedReader patientInfoReader = new BufferedReader(new FileReader(patientInfoFile))) {
+				String line;
+				while ((line = patientInfoReader.readLine()) != null) {
+			// Extract first name
+			if (line.startsWith("Email:")) {
+			    String emailFile = line.substring(line.indexOf(":") + 1).trim();
+			    emailField.setText((String.valueOf(emailFile)));
+		
+				}
+			else if (line.startsWith("Phone Number:")) {
+				 String phoneNumFile = line.substring(line.indexOf(":") + 1).trim();
+				 phoneNumField.setText((String.valueOf(phoneNumFile)));
+				
+				}
+				}
+			}
+			} catch (IOException e) {
+				e.printStackTrace();
+				// Handles any IO exceptions
+			}
+		}
+	
+	 
+	 
 
 }
