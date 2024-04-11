@@ -31,7 +31,7 @@ import javafx.stage.Stage;
 public class patientMessagingPortal {
 	public static final int WIDTH = 770, HEIGHT = 420;
 	Label title, titleMessage, titleInbox, spacer;
-	Button mainMenu, back, send, show;
+	Button mainMenu, send, show;
 	TextArea messageArea, inboxArea;
 	TextField titleSend;
 	StringBuilder warning;
@@ -80,9 +80,8 @@ public class patientMessagingPortal {
         
         HBox hAreaBottom = new HBox();
         mainMenu = new Button("Main Menu");
-        back = new Button("Return to Patient Portal");
         hAreaBottom.setSpacing(500);
-        hAreaBottom.getChildren().addAll(mainMenu, back);
+        hAreaBottom.getChildren().addAll(mainMenu);
          
         title = new Label("Office Automation System for Pediatric's Doctor's Office");
         title.setFont(Font.font("", FontWeight.BOLD, 25));
@@ -132,8 +131,7 @@ public class patientMessagingPortal {
         inboxArea.setEditable(false);
         
         patientPortal patientPortalScene = new patientPortal();
-		back.setOnAction(e -> homePageStage.setScene(patientPortalScene.patientPortalFunction(homePageStage, patientName)));
-		
+				
 		homePage homePageScene = new homePage();
 		mainMenu.setOnAction(e -> homePageStage.setScene(homePageScene.homePageFunction(homePageStage)));
          
